@@ -1,24 +1,23 @@
-var mysql = require('mysql');
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'me',
-    password: 'secret',
-    database: 'my_db'
+require('dotenv').config();
+const mysql = require('mysql');
+const inquirer = require('inquirer');
+const table = require('cli-table');
+const chalk = require('chalk');
+
+
+
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  port:3306,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: 'bamazon'
 });
 
-connection.connect();
 
-connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-    if (error) throw error;
-    console.log('The solution is: ', results[0].solution);
+connection.connect(function(err) {
+  if (err) throw err;
+  console.log("connected as id " + connection.threadId);
+  connection.end();
 });
-
-connection.end();
-
-
-/*connection.connect(function(err) {
-    if (err) {
-      console.error('error connecting: ' + err.stack);
-      return;
-    } */
 
